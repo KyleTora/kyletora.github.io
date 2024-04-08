@@ -2,17 +2,36 @@
 
 /* Header */
 .header {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
+  .navbar-brand {
+    font-size: 1.5rem; /* Larger font size for the brand */
   }
-  
+
+  .navbar-nav {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Vertically center items */
+  }
+
+  .navbar-nav .nav-item {
+    margin-left: 10px; /* Spacing between navigation items */
+  }
+
+  .nav-link {
+    color: #ffffff; /* White color for navigation links */
+    transition: color 0.3s; /* Smooth color transition on hover */
+  }
+
+  .nav-link:hover {
+    color: #adb5bd; /* Lighter gray color on hover */
+  }
+
+}
   /* Sidebar */
   .sidebar {
     background-color: #f4f4f4;
     padding: 10px;
     width: 300px;
     float: left;
+    padding-top: 20px;
 
     .list-group
     {
@@ -30,6 +49,7 @@
   .content {
     margin-left: 300px;
     padding: 40px;
+    min-height: 70vh;
   }
   
   /* Footer */

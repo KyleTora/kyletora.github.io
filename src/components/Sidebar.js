@@ -8,7 +8,6 @@ const Sidebar = () => {
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
-    // Here you can implement logic to load content based on the selected item
   };
 
   return (
