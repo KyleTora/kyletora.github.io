@@ -1,6 +1,6 @@
 /* App.css */
 
-/* Header */
+/* #region Header */
 .header {
   .navbar-brand {
     font-size: 1.5rem; /* Larger font size for the brand */
@@ -25,34 +25,73 @@
   }
 
 }
-  /* Sidebar */
-  .sidebar {
-    background-color: #f4f4f4;
-    padding: 10px;
-    width: 300px;
-    float: left;
-    padding-top: 20px;
 
-    .list-group
-    {
-        .list-group-item
-        {
-            .icon
-            {
-                float: right;
-            }
-        }
-    }
-  }
+/* #endregion */
+
+  /* #region Content */
   
-  /* Content */
-  .content {
-    margin-left: 300px;
-    padding: 40px;
-    min-height: 70vh;
-  }
-  
-  /* Footer */
+/* content styles */
+.content {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  margin: 20px;
+}
+
+.content h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.content img {
+  max-width: 150px;
+  margin-bottom: 15px;
+}
+
+.content h3 {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.content p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #777;
+}
+
+.content .details {
+  margin-top: 20px;
+}
+
+.content .details h4 {
+  font-size: 18px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.content .details p {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #777;
+}
+
+.content .loading {
+  font-size: 18px;
+  text-align: center;
+  color: #777;
+  margin-top: 30px;
+}
+
+
+  /* #endregion */
+
+
+  /* #region Footer */
   .footer {
     background-color: #333;
     color: #fff;
@@ -60,3 +99,4 @@
     margin-top: 20px;
   }
   
+  /* #endregion */

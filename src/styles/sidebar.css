@@ -1,0 +1,70 @@
+/* Sidebar */
+.sidebar {
+    background-color: #f4f4f4;
+    padding: 10px;
+    width: 300px;
+    float: left;
+    padding-top: 20px;
+
+    .card-category
+    {
+        background-color: white;
+    }
+    .icon
+    {
+        float: right;
+    }
+    
+    .slider {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      
+      .slider button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      
+      .slider button:focus {
+        outline: none;
+      }
+      
+      .slider button.active {
+        background-color: #007bff;
+        color: white;
+      }
+      .stat-list {
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .stat-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      
+      .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .icon {
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+      }
+      
+      .icon:hover {
+        transform: scale(1.2);
+      }
+  }
+  
