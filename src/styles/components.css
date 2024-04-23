@@ -1,9 +1,9 @@
-/* App.css */
 
 /* #region Header */
-.header {
+.header {  
   .navbar-brand {
     font-size: 1.5rem; /* Larger font size for the brand */
+    padding-left: 12px;
   }
 
   .navbar-nav {
@@ -12,7 +12,7 @@
   }
 
   .navbar-nav .nav-item {
-    margin-left: 10px; /* Spacing between navigation items */
+    margin-left: 20px; /* Spacing between navigation items */
   }
 
   .nav-link {
@@ -28,70 +28,59 @@
 
 /* #endregion */
 
-  /* #region Content */
-  
-/* content styles */
+/* #region Content */
+
+
+/* components.css */
+
 .content {
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
+}
+
+.post {
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
-  margin: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.content h2 {
-  font-size: 24px;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.content img {
-  max-width: 150px;
-  margin-bottom: 15px;
-}
-
-.content h3 {
-  font-size: 20px;
-  margin-top: 20px;
+.post h2 {
+  font-size: 1.5rem;
   margin-bottom: 10px;
-  color: #555;
 }
 
-.content p {
-  font-size: 16px;
+.post p {
   margin-bottom: 10px;
-  color: #777;
 }
 
-.content .details {
-  margin-top: 20px;
+.post video {
+  width: 100%;
+  border-radius: 8px;
 }
 
-.content .details h4 {
-  font-size: 18px;
-  margin-top: 15px;
-  margin-bottom: 10px;
-  color: #555;
+.post button {
+  margin-right: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.content .details p {
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #777;
-}
-
-.content .loading {
-  font-size: 18px;
-  text-align: center;
-  color: #777;
-  margin-top: 30px;
+.post button:hover {
+  background-color: #0056b3;
 }
 
 
-  /* #endregion */
 
+/* #endregion */
 
-  /* #region Footer */
+/* #region Footer */
   .footer {
     background-color: #333;
     color: #fff;
