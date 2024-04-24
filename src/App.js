@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
 import { auth } from './firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import CreatePuzzle from './pages/CreatePuzzlePage';
+import SolvePuzzle from './pages/SolvePuzzlePage';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [openPopup, setOpenPopup] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -28,60 +27,21 @@ function App() {
     };
   }, []);
 
-  const handleSignInWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const handleSignInWithEmail = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      setOpenPopup(false);
-      setEmail('');
-      setPassword('');
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-  
-  const handleSignOut = () => {
-    auth.signOut();
-  };
-
   return (
     <Router>
       <div className="app">
-        <Header />
-        {user ? (
-          <HomePage user={user} handleSignOut={handleSignOut} />
-        ) : (
-          <>
-            <button onClick={handleSignInWithGoogle}>Sign In with Google</button>
-            <button onClick={() => setOpenPopup(true)}>Sign In with Email</button>
-            {openPopup && (
-              <div className="popup">
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button onClick={handleSignInWithEmail}>Sign In</button>
-                {error && <p className="error">{error}</p>}
-              </div>
-            )}
-          </>
-        )}
+        <Header isAuthenticated={user !== null} />
+        <Routes>
+          <Route path="/" element={<HomePage user={user} />} />
+          <Route path="/profile" element={<ProfilePage user={user} />} />
+          <Route path="/signin" element={user ? <Navigate to="/" /> : <SignInPage />} />
+          <Route path="/signup" element={user ? <Navigate to="/" /> : <SignUpPage />} />
+          <Route 
+            path="/puzzleBuild" 
+            element={user ? <CreatePuzzle user={user} /> : <Navigate to="/signin" />} 
+          />
+          <Route path="/puzzleSolve/:id" element={<SolvePuzzle user={user} />} />
+        </Routes>
       </div>
     </Router>
   );

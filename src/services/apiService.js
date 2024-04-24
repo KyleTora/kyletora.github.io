@@ -18,7 +18,6 @@ export const addPostFromAPI = async (postData) => {
         league: postData.league,
         matchId: postData.matchId,
         videoURL: postData.videoURL,
-        // ... any other relevant data
       },
     });
     console.log('Post added with ID: ', docRef.id);

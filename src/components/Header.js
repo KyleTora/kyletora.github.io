@@ -2,8 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/components.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { auth } from '../firebase';
 
-const Header = () => {
+const Header = ({ isAuthenticated }) => {
+
+  const handleSignOut = () => {
+    auth.signOut();
+  };
+
   return (
     <header className="header">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,6 +29,23 @@ const Header = () => {
               <li className="nav-item">
                 <Link to="/contact" className="nav-link">Calender</Link>
               </li>
+              {isAuthenticated ? (
+                <>
+                  <li className="nav-item">
+                    <Link to="/puzzleBuild" className="nav-link">Puzzle Builder</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/profile" className="nav-link">Profile</Link>
+                  </li>
+                  <li className="nav-item">
+                    <button className="nav-link" onClick={handleSignOut}>Sign Out</button>
+                  </li>
+                </>
+              ) : (
+                <li className="nav-item">
+                  <Link to="/signin" className="nav-link">Sign In</Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

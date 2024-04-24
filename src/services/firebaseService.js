@@ -6,7 +6,6 @@ import { Timestamp } from 'firebase/firestore';
 
 const db = getFirestore();
 
-// Function to fetch all posts
 export const fetchPosts = async () => {
   const posts = [];
 
