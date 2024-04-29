@@ -6,6 +6,7 @@ import { faThumbsUp, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { collection, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase'; // Assuming '../firebase' is the correct path to your Firebase configuration file
 
 const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) => {
   const navigate = useNavigate();
@@ -53,9 +54,15 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
     getFilteredPuzzles();
   }, [selectedPuzzles, selectedFilter, selectedPageLength]);
 
-  const handleLike = async (puzzleId) => {
+  const handleLike = async (puzzleType, puzzleId) => {
     try {
-      const puzzleRef = doc(db, 'riddles', puzzleId);
+      if (!auth.currentUser) {
+        // User is not signed in, notify them to sign in
+        alert('Please sign in to like this post.');
+        return;
+      }
+
+      const puzzleRef = doc(db, `${puzzleType}` + 's', puzzleId);
       const puzzleDoc = await getDoc(puzzleRef);
 
       if (puzzleDoc.exists()) {
@@ -79,8 +86,8 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
     }
   };
 
-  const handleSolveClick = (puzzleId) => {
-    navigate(`/puzzleSolve/${puzzleId}`);
+  const handleSolveClick = (puzzle) => {
+    navigate(`/puzzleSolve/${puzzle.puzzleType}/${puzzle.id}`);
   };
 
   return (
@@ -88,18 +95,17 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
       <h1 className="title">Puzzle Feed</h1>
       {puzzles.map((puzzle) => (
         <div key={puzzle.id} className="puzzle-container">
+          <a className='puzzle-type'>{puzzle.puzzleType}</a>
           <h4 className="puzzle-description">{puzzle.description}</h4>
           <div className="puzzle-info">
             <p className="puzzle-author">Posted by: {puzzle.author}</p>
-            <p className="puzzle-likes">Likes: {puzzle.likes}</p>
           </div>
           <div className="puzzle-actions">
-            <button onClick={() => handleLike(puzzle.id)}>
-              <FontAwesomeIcon icon={faThumbsUp} />
+            <button onClick={() => handleLike(puzzle.puzzleType, puzzle.id)} className="like-button">
+              <FontAwesomeIcon icon={faThumbsUp} /> {puzzle.likes}
             </button>
-            <button onClick={() => handleSolveClick(puzzle.id)} className="solve-button">
-              <FontAwesomeIcon icon={faPlayCircle} />
-              Solve Puzzle
+            <button onClick={() => handleSolveClick(puzzle)} className="solve-button">
+              <FontAwesomeIcon icon={faPlayCircle} /> Solve
             </button>
           </div>
         </div>

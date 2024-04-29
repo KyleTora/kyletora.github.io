@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 
 const ProfilePage = ({ user }) => {
   const navigate = useNavigate();
-    console.log(user.providerData);
+  const [completedRiddles, setCompletedRiddles] = useState([]);
+  const [likedRiddles, setLikedRiddles] = useState([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Assuming 'completedRiddles' and 'likedRiddles' are arrays stored in the user's document
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        setCompletedRiddles(userData.completedRiddles || []);
+        setLikedRiddles(userData.likedRiddles || []);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [user.uid]);
+
   const handleSignOut = () => {
     auth.signOut();
     navigate('/');
@@ -30,6 +48,25 @@ const ProfilePage = ({ user }) => {
         <strong>Email:</strong> {user.email}
       </div>
 
+      <div>
+        <h3>Completed Riddles:</h3>
+        <ul>
+          {completedRiddles.map((riddle, index) => (
+            <li key={index}>{riddle}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3>Liked Riddles:</h3>
+        <ul>
+          {likedRiddles.map((riddle, index) => (
+            <li key={index}>{riddle}</li>
+          ))}
+        </ul>
+      </div>
+
+      <button onClick={handleSignOut}>Sign Out</button>
     </div>
   );
 };

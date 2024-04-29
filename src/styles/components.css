@@ -30,69 +30,93 @@
 
 /* #region Content */
 
-
-/* components.css */
-
-.content {
+.content 
+{
   padding: 20px;
-}
 
-.title {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
+  .title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
 
-.puzzle-container {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
+  .puzzle-container 
+  {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+  
+    .puzzle-type
+    {
+      text-decoration: none;
+      text-transform: uppercase;
+      color: slategray;
+      font-weight: bold;
+    }
 
-.puzzle-description {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
+    .puzzle-description 
+    {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
 
-.puzzle-info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
+    .puzzle-info 
+    {
+      text-transform: capitalize;
+    }
 
-.puzzle-author,
-.puzzle-likes {
-  font-size: 0.9rem;
-}
+    .puzzle-author, .puzzle-likes 
+    {
+      font-size: 0.9rem;
+    }
 
-.puzzle-actions {
-  display: flex;
-  gap: 10px;
-}
+    .puzzle-actions 
+    {
+      gap: 10px;
+    }
 
-.solve-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-}
+    .like-button 
+    {
+      background-color: #2f7500;
+      color: #fff;
+      border: 2px solid #2f7500;
+      padding: 7px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 0;
 
-.solve-button:hover {
-  background-color: #0056b3;
-}
+    }
 
-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
+    .like-button:hover 
+    {
+      background-color: white;
+      border: 2px solid #2f7500;
+      color: #2f7500;
+      font-weight: bold;
+    }
 
-button:hover {
-  color: #007bff;
-}
+    .solve-button 
+    {
+      background-color: #007bff;
+      color: #fff;
+      border: 2px solid #007bff;
+      padding: 7px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 5px;
+    }
 
+    .solve-button:hover 
+    {
+      background-color: white;
+      border: 2px solid #007bff;
+      color: #007bff;
+      font-weight: bold;
+    }
+  }
+}
 
 /* #endregion */
 

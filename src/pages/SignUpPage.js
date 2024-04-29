@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase'; // Import Firestore database instance
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleSignUp = async (e) => {
@@ -18,8 +20,18 @@ const SignUpPage = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // Create user with email and password
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+
+      // Add user data to Firestore "Users" collection
+      await addDoc(collection(db, 'users'), {
+        uid: user.uid,
+        email: email
+      });
+
       setSuccess(true);
       setEmail('');
       setPassword('');
@@ -27,11 +39,16 @@ const SignUpPage = () => {
     } catch (err) {
       setError(err.message);
     }
+
+    setLoading(false);
   };
+
+  if (success) {
+    return <Navigate to="/signin" />;
+  }
 
   return (
     <div className="signup-container">
-      {success && <Navigate to="/signin" />}
       <h2>Sign Up</h2>
       <form onSubmit={handleSignUp}>
         <div className="form-group">
@@ -61,7 +78,7 @@ const SignUpPage = () => {
             required
           />
         </div>
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
         {error && <p className="error">{error}</p>}
       </form>
       <p>Already have an account? <Link to="/signin">Sign In</Link></p>

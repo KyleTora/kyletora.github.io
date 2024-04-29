@@ -41,7 +41,7 @@ function App() {
             path="/puzzleBuild" 
             element={user ? <CreatePuzzle user={user} /> : <Navigate to="/signin" />} 
           />
-          <Route path="/puzzleSolve/:id" element={<SolvePuzzle user={user} />} />
+          <Route path="/puzzleSolve/:type/:id" element={<SolvePuzzle user={user} />} />
         </Routes>
         <Footer />
       </div>

@@ -4,11 +4,11 @@ import '../styles/sidebar.css';
 const Sidebar = ({ onPuzzleSelect, onFilterSelect, onPageLengthSelect }) => {
   const [selectedPuzzles, setSelectedPuzzles] = useState(['riddles']);
   const [selectedFilter, setSelectedFilter] = useState('Most likes');
-  const [selectedPageLength, setSelectedPageLength] = useState(10); // Default page length
+  const [selectedPageLength, setSelectedPageLength] = useState(5); // Default page length
 
   const puzzles = ['riddles', 'wordles'];
   const filters = ['Most likes', 'Most solved', 'Order by date', 'Order by difficulty'];
-  const pageLengthOptions = [10, 20, 30];
+  const pageLengthOptions = [5, 10, 20];
 
   const handlePuzzleChange = (puzzle) => {
     const updatedPuzzles = selectedPuzzles.includes(puzzle)

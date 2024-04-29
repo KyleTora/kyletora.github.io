@@ -8,7 +8,7 @@ import '../styles/homepage.css';
 const HomePage = ({ user }) => {
   const [selectedPuzzles, setSelectedPuzzles] = useState(['riddles']);
   const [selectedFilter, setSelectedFilter] = useState('Most likes');
-  const [selectedPageLength, setSelectedPageLength] = useState(10); // Default page length
+  const [selectedPageLength, setSelectedPageLength] = useState();
 
   const handlePuzzleSelect = (selectedPuzzles) => {
     setSelectedPuzzles(selectedPuzzles);
