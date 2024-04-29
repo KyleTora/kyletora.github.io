@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import SignInPage from './pages/SignInPage';
@@ -42,6 +43,7 @@ function App() {
           />
           <Route path="/puzzleSolve/:id" element={<SolvePuzzle user={user} />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );
