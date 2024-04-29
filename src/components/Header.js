@@ -14,36 +14,36 @@ const Header = ({ isAuthenticated }) => {
     <header className="header">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <Link to="/" className="navbar-brand">NBA App</Link>
+          <Link to="/" className="navbar-brand">HOME</Link>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link to="/" className="nav-link">Home</Link>
+                <Link to="/" className="nav-link">HOME</Link>
               </li>
               <li className="nav-item">
-                <Link to="/about" className="nav-link">League News</Link>
+                <Link to="/about" className="nav-link">EXPLORE</Link>
               </li>
               <li className="nav-item">
-                <Link to="/contact" className="nav-link">Calender</Link>
+                <Link to="/contact" className="nav-link">LEADERBOARD</Link>
               </li>
               {isAuthenticated ? (
                 <>
                   <li className="nav-item">
-                    <Link to="/puzzleBuild" className="nav-link">Puzzle Builder</Link>
+                    <Link to="/puzzleBuild" className="nav-link">CREATE</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/profile" className="nav-link">Profile</Link>
+                    <Link to="/profile" className="nav-link">PROFILE</Link>
                   </li>
                   <li className="nav-item">
-                    <button className="nav-link" onClick={handleSignOut}>Sign Out</button>
+                    <Link className="nav-link" onClick={handleSignOut}>SIGN OUT</Link>
                   </li>
                 </>
               ) : (
                 <li className="nav-item">
-                  <Link to="/signin" className="nav-link">Sign In</Link>
+                  <Link to="/signin" className="nav-link">SIGN IN</Link>
                 </li>
               )}
             </ul>

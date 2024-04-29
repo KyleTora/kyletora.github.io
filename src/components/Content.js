@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import '../styles/components.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faComments, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
-import Chat from './Chat';
-import { collection, getDocs, updateDoc, doc, getDoc, arrayUnion, where, query } from 'firebase/firestore';
+import { faThumbsUp, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { collection, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 
-const Content = ({ user, selectedPuzzles }) => {
+const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) => {
   const navigate = useNavigate();
   const [puzzles, setPuzzles] = useState([]);
 
@@ -25,13 +24,34 @@ const Content = ({ user, selectedPuzzles }) => {
       });
 
       const results = await Promise.all(promises);
-      const fetchedPuzzles = results.flatMap(docList => docList.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      let fetchedPuzzles = results.flatMap(docList => docList.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      // Apply the selected filter
+      switch (selectedFilter) {
+        case 'Most likes':
+          fetchedPuzzles.sort((a, b) => b.likes - a.likes);
+          break;
+        case 'Most solved':
+          // Add your sorting logic for 'Most solved' here
+          break;
+        case 'Order by date':
+          fetchedPuzzles.sort((a, b) => new Date(b.date) - new Date(a.date));
+          break;
+        case 'Order by difficulty':
+          // Add your sorting logic for 'Order by difficulty' here
+          break;
+        default:
+          break;
+      }
+
+      // Limit the number of displayed puzzles
+      fetchedPuzzles = fetchedPuzzles.slice(0, selectedPageLength);
 
       setPuzzles(fetchedPuzzles);
     };
 
     getFilteredPuzzles();
-  }, [selectedPuzzles]);
+  }, [selectedPuzzles, selectedFilter, selectedPageLength]);
 
   const handleLike = async (puzzleId) => {
     try {
@@ -59,44 +79,6 @@ const Content = ({ user, selectedPuzzles }) => {
     }
   };
 
-  const [activeChat, setActiveChat] = useState(null);
-  const [chatMessages, setChatMessages] = useState([]);
-
-  const openChat = async (puzzleId) => {
-    try {
-      const chatRef = doc(db, 'chats', puzzleId);
-      const chatDoc = await getDoc(chatRef);
-
-      if (chatDoc.exists()) {
-        setChatMessages(chatDoc.data().messages || []);
-        setActiveChat(activeChat === puzzleId ? null : puzzleId);
-      } else {
-        setActiveChat(activeChat === puzzleId ? null : puzzleId);
-      }
-    } catch (error) {
-      console.error('Error opening chat:', error);
-    }
-  };
-
-  const sendMessage = async (messageText, puzzleId) => {
-    try {
-      const chatRef = doc(db, 'chats', puzzleId);
-      const newMessage = {
-        text: messageText,
-        sender: user.displayName || 'currentUser',
-        timestamp: new Date().toISOString(),
-      };
-
-      await updateDoc(chatRef, {
-        messages: arrayUnion(newMessage),
-      });
-
-      setChatMessages(prevMessages => [...prevMessages, newMessage]);
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
-  };
-
   const handleSolveClick = (puzzleId) => {
     navigate(`/puzzleSolve/${puzzleId}`);
   };
@@ -115,21 +97,11 @@ const Content = ({ user, selectedPuzzles }) => {
             <button onClick={() => handleLike(puzzle.id)}>
               <FontAwesomeIcon icon={faThumbsUp} />
             </button>
-            <button onClick={() => openChat(puzzle.id)}>
-              <FontAwesomeIcon icon={faComments} />
-            </button>
             <button onClick={() => handleSolveClick(puzzle.id)} className="solve-button">
               <FontAwesomeIcon icon={faPlayCircle} />
               Solve Puzzle
             </button>
           </div>
-          {activeChat === puzzle.id && (
-            <Chat
-              puzzleId={puzzle.id}
-              messages={chatMessages}
-              onSendMessage={sendMessage}
-            />
-          )}
         </div>
       ))}
     </div>

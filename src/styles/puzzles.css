@@ -3,7 +3,7 @@
 
 .create-puzzle-container 
 {
-    background-color:darkgray;
+    background-color:white;
     padding: 20px;
     text-align: center;
   
@@ -68,7 +68,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   
-    background-color:darkgray;
+    background-color: white;
     padding: 20px;
     text-align: center;
   

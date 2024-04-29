@@ -1,7 +1,9 @@
 .sidebar {
-  background-color: #f4f4f4;
+  background-color: #3d3c3c;
   padding: 20px;
   border-radius: 5px;
+  margin-top: 80px;
+  color: white;
 }
 
 .sidebar h2 {
@@ -18,11 +20,15 @@
   margin-bottom: 10px;
 }
 
-.sidebar label {
-  font-size: 1rem;
+.puzzle-label {
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
   cursor: pointer;
+
+  .form-check-input
+  {
+    margin-right: 10px;
+  }
 }
 
-.sidebar input[type="checkbox"] {
-  margin-right: 10px;
-}
