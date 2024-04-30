@@ -38,7 +38,7 @@ const HomePage = ({ user }) => {
               <h4 className='heading'>Welcome back, {user.providerData[0].displayName}!</h4>
             </>
           ) : null}
-          <Content 
+          <Content user={user}
             selectedPuzzles={selectedPuzzles} 
             selectedFilter={selectedFilter} 
             selectedPageLength={selectedPageLength} 

@@ -3,7 +3,7 @@ import '../styles/components.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
-import { collection, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, updateDoc, doc, getDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase'; // Assuming '../firebase' is the correct path to your Firebase configuration file
@@ -11,6 +11,7 @@ import { auth } from '../firebase'; // Assuming '../firebase' is the correct pat
 const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) => {
   const navigate = useNavigate();
   const [puzzles, setPuzzles] = useState([]);
+  const userID = user?.uid || '';
 
   useEffect(() => {
     const getFilteredPuzzles = async () => {
@@ -57,7 +58,6 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
   const handleLike = async (puzzleType, puzzleId) => {
     try {
       if (!auth.currentUser) {
-        // User is not signed in, notify them to sign in
         alert('Please sign in to like this post.');
         return;
       }
@@ -80,6 +80,20 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
             return puzzle;
           });
         });
+      
+        const userDocRef = doc(db, 'users', userID);
+        if(puzzleType === 'riddles')
+        {
+          await updateDoc(userDocRef, {
+            likedRiddles: arrayUnion(puzzleId),
+          });
+        }
+        else
+        {
+          await updateDoc(userDocRef, {
+            likedWordles: arrayUnion(puzzleId),
+          });
+        }
       }
     } catch (error) {
       console.error('Error updating like:', error);

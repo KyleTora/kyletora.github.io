@@ -1,13 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, redirect } from 'react-router-dom';
 import '../styles/components.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const Header = ({ isAuthenticated }) => {
-
+  const navigate = useNavigate();
+  
   const handleSignOut = () => {
     auth.signOut();
+    navigate('/homepage');
   };
 
   return (

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -13,20 +12,22 @@ import SolvePuzzle from './pages/SolvePuzzlePage';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        setUser(authUser);
-      } else {
-        setUser(null);
-      }
+      setUser(authUser);
+      setLoading(false);
     });
 
     return () => {
       unsubscribe();
     };
   }, []);
+
+  if (loading) {
+    return <div></div>;
+  }
 
   return (
     <Router>

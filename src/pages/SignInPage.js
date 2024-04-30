@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import '../styles/signin.css';
 
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const SignInPage = () => {
   const [email, setEmail] = useState('');
@@ -27,7 +28,21 @@ const SignInPage = () => {
   const handleSignInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      
+      const userRef = doc(db, 'users', result.user.uid);
+      const userDoc = await getDoc(userRef);
+
+      if (!userDoc.exists()) {
+        // If the user document doesn't exist, create it
+        await setDoc(userRef, {
+          email: result.user.email,
+          completedRiddles: [],
+          likedRiddles: [],
+          createdRiddles: []
+        });
+      }
+      
       setSuccess(true);
     } catch (err) {
       setError(err.message);

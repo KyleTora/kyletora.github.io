@@ -3,13 +3,13 @@ import Riddle from '../components/RiddleComponent';
 import Wordle from '../components/WordleComponent';
 import { useParams } from 'react-router-dom';
 
-const PuzzleSolvePage = () => {
+const PuzzleSolvePage = (user) => {
 
   const { type } = useParams();
 
   return (
     <div>
-      {type === 'wordle' ? <Wordle /> : <Riddle />}
+      {type === 'wordle' ? <Wordle user={user} /> : <Riddle user={user}/>}
     </div>
   );
 };

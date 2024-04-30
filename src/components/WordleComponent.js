@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import '../styles/puzzles.css';
 
-const WordleComponent = () => {
+const WordleComponent = ({user}) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [wordle, setWordle] = useState('');
@@ -13,6 +13,7 @@ const WordleComponent = () => {
   const [error, setError] = useState(null);
   const [isSolved, setIsSolved] = useState(false);
   const [question, setQuestion] = useState('');
+  const userID = user.user.uid;
 
   useEffect(() => {
     const fetchWordle = async () => {
@@ -39,11 +40,28 @@ const WordleComponent = () => {
     if (solution.toUpperCase() === wordle.toUpperCase()) {
       setIsSolved(true);
       setError(null);
+      handleRiddleComplete();
+
     } else {
       setError('Incorrect solution. Try again!');
     }
   };
 
+  const handleRiddleComplete = async () => {
+    try {
+      const userDocRef = doc(db, 'users', userID);
+      
+      await updateDoc(userDocRef, {
+        completedWordles: arrayUnion(id) 
+      });
+      
+      console.log('Riddle completed successfully');
+    } catch (err) {
+      setError('Failed to update riddle. Please try again later.');
+      console.error('Error completing riddle:', err);
+    }
+  };
+  
   if (!wordle) {
     return <div>Loading...</div>;
   }

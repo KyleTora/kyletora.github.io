@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { auth, db } from '../firebase'; // Import Firestore database instance
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -26,10 +26,16 @@ const SignUpPage = () => {
       // Create user with email and password
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
-      // Add user data to Firestore "Users" collection
-      await addDoc(collection(db, 'users'), {
-        uid: user.uid,
-        email: email
+      const userDocRef = doc(db, 'users', user.uid);
+
+      await setDoc(userDocRef, {
+        email: user.email,
+        completedRiddles: [],
+        likedRiddles: [],
+        createdRiddles: [],
+        completedWordles: [],
+        likedWordles: [],
+        createdWordles: []
       });
 
       setSuccess(true);

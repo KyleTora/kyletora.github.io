@@ -1,0 +1,128 @@
+
+
+.profile-container
+{
+    .profile-sidebar
+    {
+
+    }
+
+
+    .profile-feed
+    {
+        h2
+        {
+            cursor: pointer;
+            margin-bottom: 10px;
+            color: black;
+            background-color: white;
+            padding: 10px;
+            transition: color 0.3s;
+            border-radius: 5px;
+            border: 2px solid black;
+
+        }
+
+        .profile-header 
+        {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+          
+            button
+            {
+                background-color: white;
+                border: 2px solid blue;
+                color: blue;
+            }
+    
+            .selected 
+            {
+                background-color: blue;
+                border: 2px solid darkblue;
+                color: #fff;
+                border-radius: 5px;
+            }
+        }
+
+
+        .puzzle-container
+        {
+            border: 2px solid black;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+
+            .puzzle-type
+            {
+                text-decoration: none;
+                text-transform: uppercase;
+                color: slategray;
+                font-weight: bold;
+            }
+
+            .puzzle-description 
+            {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+            .puzzle-info 
+            {
+                text-transform: capitalize;
+            }
+
+            .puzzle-author, .puzzle-likes 
+            {
+                font-size: 0.9rem;
+            }
+
+            .puzzle-actions 
+            {
+                gap: 10px;
+            }
+
+            .like-button 
+            {
+                background-color: #2f7500;
+                color: #fff;
+                border: 2px solid #2f7500;
+                padding: 7px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                margin-left: 0;
+
+            }
+
+            .like-button:hover 
+            {
+                background-color: white;
+                border: 2px solid #2f7500;
+                color: #2f7500;
+                font-weight: bold;
+            }
+
+            .solve-button 
+            {
+                background-color: #007bff;
+                color: #fff;
+                border: 2px solid #007bff;
+                padding: 7px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                margin-left: 5px;
+            }
+
+            .solve-button:hover 
+            {
+                background-color: white;
+                border: 2px solid #007bff;
+                color: #007bff;
+                font-weight: bold;
+            }
+        }
+    }
+}

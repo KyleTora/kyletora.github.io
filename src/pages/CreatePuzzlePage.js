@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, arrayUnion } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import '../styles/puzzles.css'; 
@@ -11,6 +11,7 @@ const CreatePuzzlePage = ({ user }) => {
   const [description, setDescription] = useState('');
   const [error, setError] = useState(null);
   const [isRiddle, setIsRiddle] = useState(false);
+  const userID = user.uid;
 
   const handleSwitchClick = () => {
     setIsRiddle(!isRiddle);
@@ -27,6 +28,12 @@ const CreatePuzzlePage = ({ user }) => {
         description,
         puzzleType: "riddle",
         likes: 0
+      });
+
+      const userDocRef = doc(db, 'users', userID);
+      
+      await updateDoc(userDocRef, {
+        createdRiddles: arrayUnion(docRef.id),
       });
 
       navigate(`/puzzleSolve/riddle/${docRef.id}`);
@@ -49,10 +56,16 @@ const CreatePuzzlePage = ({ user }) => {
         likes: 0
       });
 
+      const userDocRef = doc(db, 'users', userID);
+      
+      await updateDoc(userDocRef, {
+        createdWordles: arrayUnion(docRef.id),
+      });
+
       navigate(`/puzzleSolve/wordle/${docRef.id}`);
     } catch (err) {
-      console.error('Error adding riddle:', err);
-      setError('Failed to create riddle. Please try again later.');
+      console.error('Error adding wordle:', err);
+      setError('Failed to create wordle. Please try again later.');
     }
   };
 
