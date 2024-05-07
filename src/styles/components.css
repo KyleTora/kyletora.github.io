@@ -1,28 +1,54 @@
 
 /* #region Header */
 .header {  
+  background-color: darkslategray;
+
   .navbar-brand {
-    font-size: 1.5rem; /* Larger font size for the brand */
-    padding-left: 12px;
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
   }
 
-  .navbar-nav {
-    display: flex; /* Use flexbox for alignment */
-    align-items: center; /* Vertically center items */
+  .navbar-brand:hover {
+    color: goldenrod;
   }
 
-  .navbar-nav .nav-item {
-    margin-left: 20px; /* Spacing between navigation items */
+
+  .navbar-links {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    
+    .navbar-links-buttons
+    {
+      display: inline-block;
+      margin-right: 20px;
+      margin-top: 2px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+
+      @media(max-width: 767px)
+      {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+
+    .navbar-links-buttons:first-child
+    {
+      margin-left: 0;
+    }
+
+    .navbar-links-buttons:hover
+    {
+      color: goldenrod;
+    }
   }
 
-  .nav-link {
-    color: #ffffff; /* White color for navigation links */
-    transition: color 0.3s; /* Smooth color transition on hover */
-  }
-
-  .nav-link:hover {
-    color: #adb5bd; /* Lighter gray color on hover */
-  }
 
 }
 
@@ -77,9 +103,9 @@
 
     .like-button 
     {
-      background-color: #2f7500;
+      background-color: darkslategray;
       color: #fff;
-      border: 2px solid #2f7500;
+      border: 2px solid darkslategray;
       padding: 7px 10px;
       border-radius: 5px;
       cursor: pointer;
@@ -91,16 +117,16 @@
     .like-button:hover 
     {
       background-color: white;
-      border: 2px solid #2f7500;
-      color: #2f7500;
+      border: 2px solid darkslategray;
+      color: darkslategray;
       font-weight: bold;
     }
 
     .solve-button 
     {
-      background-color: #007bff;
-      color: #fff;
-      border: 2px solid #007bff;
+      background-color: white;
+      color: darkslategray;
+      border: 2px solid darkslategray;
       padding: 7px 10px;
       border-radius: 5px;
       cursor: pointer;
@@ -110,9 +136,9 @@
 
     .solve-button:hover 
     {
-      background-color: white;
-      border: 2px solid #007bff;
-      color: #007bff;
+      background-color: darkslategray;
+      border: 2px solid darkslategray;
+      color: white;
       font-weight: bold;
     }
   }
@@ -125,7 +151,6 @@
     background-color: #333;
     color: #fff;
     padding: 10px;
-    margin-top: 20px;
   }
   
   /* #endregion */

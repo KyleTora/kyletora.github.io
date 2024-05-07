@@ -6,7 +6,7 @@ import { faThumbsUp, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { collection, getDocs, updateDoc, doc, getDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase'; // Assuming '../firebase' is the correct path to your Firebase configuration file
+import { auth } from '../firebase'; 
 
 const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) => {
   const navigate = useNavigate();

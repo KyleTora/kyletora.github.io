@@ -1,0 +1,60 @@
+
+
+.landing-page
+{
+    background: linear-gradient(340deg, rgba(47,79,79,1) 40%, rgba(255,255,255,1) 70%);
+    color: white;
+    height:100vh;
+    position: relative;
+
+    .text-box
+    {
+        position: absolute;
+        top: 20%;
+
+        .title
+        {
+            font-size: 60px;
+            font-weight: bolder;
+            color: darkslategray;
+            margin-bottom: 40px;
+        }
+
+        .body
+        {
+            font-size: 24px;
+            font-weight: bold;
+            color: darkslategray;
+        }
+
+        .explore-button
+        {
+            background-color: darkslategray;
+            border: 2px solid darkslategray;
+            font-weight: bold;
+            margin-left: 0;
+        }
+
+        .explore-button:hover
+        {
+            background-color: white;
+            color: darkslategray;
+            border: 2px solid darkslategray;
+        }
+
+        .signin-button
+        {
+            background-color: goldenrod;
+            border: 2px solid goldenrod;
+            color: white;
+            font-weight: bold;
+        }
+
+        .signin-button:hover
+        {
+            background-color: white;
+            color: goldenrod;
+            border: 2px solid goldenrod;
+        }
+    }
+}

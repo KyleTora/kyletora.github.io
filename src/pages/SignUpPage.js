@@ -3,6 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { auth, db } from '../firebase'; // Import Firestore database instance
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import '../styles/signup.css';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -60,6 +61,7 @@ const SignUpPage = () => {
         <div className="form-group">
           <label>Email</label>
           <input
+            className='text-boxes'
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -69,6 +71,7 @@ const SignUpPage = () => {
         <div className="form-group">
           <label>Password</label>
           <input
+            className='text-boxes'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -78,6 +81,7 @@ const SignUpPage = () => {
         <div className="form-group">
           <label>Confirm Password</label>
           <input
+            className='text-boxes'
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}

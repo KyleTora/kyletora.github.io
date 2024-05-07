@@ -57,6 +57,7 @@ const SignInPage = () => {
         <div className="form-group">
           <label>Email</label>
           <input
+            className='text-boxes'
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -66,6 +67,7 @@ const SignInPage = () => {
         <div className="form-group">
           <label>Password</label>
           <input
+            className='text-boxes'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

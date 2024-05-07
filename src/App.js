@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
+import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
@@ -34,7 +35,8 @@ function App() {
       <div className="app">
         <Header isAuthenticated={user !== null} />
         <Routes>
-          <Route path="/" element={<HomePage user={user} />} />
+          <Route path="/" element={<LandingPage user={user}/>} />
+          <Route path="/explore" element={<HomePage user={user} />} />
           <Route path="/profile" element={<ProfilePage user={user} />} />
           <Route path="/signin" element={user ? <Navigate to="/" /> : <SignInPage />} />
           <Route path="/signup" element={user ? <Navigate to="/" /> : <SignUpPage />} />

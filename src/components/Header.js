@@ -4,56 +4,43 @@ import '../styles/components.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+import { Navbar, Nav } from 'react-bootstrap';
 
 const Header = ({ isAuthenticated }) => {
   const navigate = useNavigate();
   
   const handleSignOut = () => {
     auth.signOut();
-    navigate('/homepage');
+    navigate('/');
   };
 
   return (
     <header className="header">
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <Navbar className="navbar" expand="md">        
         <div className="container">
-          <Link to="/" className="navbar-brand">HOME</Link>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link to="/" className="nav-link">HOME</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/about" className="nav-link">EXPLORE</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/contact" className="nav-link">LEADERBOARD</Link>
-              </li>
+
+          <Navbar.Brand href="/" className=' navbar-brand'>Home</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
+              <Nav className='navbar-links'>
+                <Nav.Link  href="/explore" className="navbar-links-buttons">EXPLORE</Nav.Link>
+                <Nav.Link href="/contact" className="navbar-links-buttons">LEADERBOARD</Nav.Link>
+                <Nav.Link href="/about" className="navbar-links-buttons">ABOUT</Nav.Link>
+
               {isAuthenticated ? (
                 <>
-                  <li className="nav-item">
-                    <Link to="/puzzleBuild" className="nav-link">CREATE</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/profile" className="nav-link">PROFILE</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" onClick={handleSignOut}>SIGN OUT</Link>
-                  </li>
+                    <Nav.Link href="/puzzleBuild" className="navbar-links-buttons">CREATE</Nav.Link>
+                    <Nav.Link href="/profile" className="navbar-links-buttons">PROFILE</Nav.Link>
+                    <Nav.Link className="navbar-links-buttons" onClick={handleSignOut}>SIGN OUT</Nav.Link>
                 </>
               ) : (
-                <li className="nav-item">
-                  <Link to="/signin" className="nav-link">SIGN IN</Link>
-                </li>
+                  <Nav.Link href="/signin" className="navbar-links-buttons">SIGN IN</Nav.Link>
               )}
-            </ul>
+              </Nav>
+            </Navbar.Collapse>
           </div>
-        </div>
-      </nav>
-    </header>
+        </Navbar>
+      </header>
   );
 };
 
