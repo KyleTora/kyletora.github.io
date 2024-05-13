@@ -3,12 +3,12 @@ import '../styles/sidebar.css';
 
 const Sidebar = ({ onPuzzleSelect, onFilterSelect, onPageLengthSelect }) => {
   const [selectedPuzzles, setSelectedPuzzles] = useState(['riddles']);
-  const [selectedFilter, setSelectedFilter] = useState('Most likes');
-  const [selectedPageLength, setSelectedPageLength] = useState(5); // Default page length
+  const [selectedFilter, setSelectedFilter] = useState('popular');
+  const [selectedPageLength, setSelectedPageLength] = useState(10); // Default page length
 
   const puzzles = ['riddles', 'wordles'];
-  const filters = ['Most likes', 'Most solved', 'Order by date', 'Order by difficulty'];
-  const pageLengthOptions = [5, 10, 20];
+  const filters = ['popular', 'newest'];
+  const pageLengthOptions = [10, 20, 30];
 
   const handlePuzzleChange = (puzzle) => {
     const updatedPuzzles = selectedPuzzles.includes(puzzle)
@@ -31,14 +31,14 @@ const Sidebar = ({ onPuzzleSelect, onFilterSelect, onPageLengthSelect }) => {
 
   return (
     <aside className="sidebar">
-      <h2>Puzzle Filter</h2>
+      <h2>Puzzle Type</h2>
       <ul className="list-unstyled">
         {puzzles.map((puzzle) => (
           <li key={puzzle}>
             <div className="form-check">
               <input
                 type="checkbox"
-                className="form-check-input"
+                className="form-check-input custom-checkbox"
                 id={puzzle}
                 value={puzzle}
                 checked={selectedPuzzles.includes(puzzle)}
@@ -51,14 +51,14 @@ const Sidebar = ({ onPuzzleSelect, onFilterSelect, onPageLengthSelect }) => {
           </li>
         ))}
       </ul>
-      <h2>Filter By</h2>
+      <h2>Order By</h2>
       <ul className="list-unstyled">
         {filters.map((filter) => (
           <li key={filter}>
             <div className="form-check">
               <input
                 type="radio"
-                className="form-check-input"
+                className="form-check-input custom-checkbox"
                 id={filter}
                 value={filter}
                 checked={selectedFilter === filter}

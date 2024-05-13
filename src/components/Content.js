@@ -30,7 +30,7 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
 
       // Apply the selected filter
       switch (selectedFilter) {
-        case 'Most likes':
+        case 'popular':
           fetchedPuzzles.sort((a, b) => b.likes - a.likes);
           break;
         case 'Most solved':
@@ -101,6 +101,11 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
   };
 
   const handleSolveClick = (puzzle) => {
+    if (!auth.currentUser) {
+      alert('Please sign in to like this post.');
+      return;
+    }
+
     navigate(`/puzzleSolve/${puzzle.puzzleType}/${puzzle.id}`);
   };
 
@@ -109,7 +114,14 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
       <h1 className="title">Puzzle Feed</h1>
       {puzzles.map((puzzle) => (
         <div key={puzzle.id} className="puzzle-container">
-          <a className='puzzle-type'>{puzzle.puzzleType}</a>
+          <a className='puzzle-type'>{puzzle.puzzleType}</a>          
+          <span className='puzzle-date'>
+            {new Date(puzzle.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </span>
           <h4 className="puzzle-description">{puzzle.description}</h4>
           <div className="puzzle-info">
             <p className="puzzle-author">Posted by: {puzzle.author}</p>

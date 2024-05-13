@@ -14,6 +14,7 @@ const WordleComponent = ({user}) => {
   const [isSolved, setIsSolved] = useState(false);
   const [question, setQuestion] = useState('');
   const userID = user.user.uid;
+  var areLettersCorrect = new Array(5).fill(false);
 
   useEffect(() => {
     const fetchWordle = async () => {
@@ -33,9 +34,24 @@ const WordleComponent = ({user}) => {
 
     fetchWordle();
   }, [id]);
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const convertedAnswer = [...solution.toUpperCase()];
+    const convertedWordle = [...wordle.toUpperCase()];
+    
+    if(solution.length === wordle.length)
+    {
+      for(var i = 0; i < wordle.length; i++)
+      {
+        if(convertedAnswer[i] === convertedWordle[i])
+        {
+          areLettersCorrect[i] = true;
+        }
+      }
+    }
 
     if (solution.toUpperCase() === wordle.toUpperCase()) {
       setIsSolved(true);
@@ -46,6 +62,7 @@ const WordleComponent = ({user}) => {
       setError('Incorrect solution. Try again!');
     }
   };
+
 
   const handleRiddleComplete = async () => {
     try {
@@ -71,7 +88,6 @@ const WordleComponent = ({user}) => {
       <div className="solve-wordle-container">
         <h2>Congratulations!</h2>
         <p>You've successfully solved the wordle.</p>
-
       </div>
     );
   }
@@ -80,20 +96,30 @@ const WordleComponent = ({user}) => {
     <div className="solve-wordle-container">
       <h2>Solve the Wordle</h2>
       {error && <p className="error">{error}</p>}
-      <p>{question}</p>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="solution">Solution: {wordle.length} letters</label>
-          <input
-            type="text"
-            id="solution"
-            value={solution}
-            onChange={(e) => setSolution(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Check Solution</button>
-      </form>
+      <p className='question'>{question}</p>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="solution">Length: {wordle.length} letters</label>
+            <input type="text" 
+                  id="solution"
+                  value={solution}
+                  onChange={(e) => setSolution(e.target.value)}
+                  required 
+                  autoFocus 
+                  autoComplete='off'
+                  maxLength={5} 
+                  minLength={5}
+            />
+            <div className='row letter-row'>
+              <div className="letter-box">{solution[0]}</div>
+              <div className="letter-box">{solution[1]}</div>
+              <div className="letter-box">{solution[2]}</div>
+              <div className="letter-box">{solution[3]}</div>
+              <div className="letter-box">{solution[4]}</div>
+            </div>
+          </div>
+          <button type="submit">Check Solution</button>
+        </form>
     </div>
   );
 };

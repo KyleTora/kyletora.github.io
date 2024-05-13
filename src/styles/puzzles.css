@@ -75,6 +75,7 @@
 
     h2 {
         font-size: 24px;
+        font-weight: bold;
         margin-bottom: 20px;
     }
 
@@ -95,7 +96,8 @@
 
     .horizontal-letters {
         justify-content: center; /* Center the items horizontally */
-        align-items: center; /* Center the items vertically */        display: flex;
+        align-items: center; /* Center the items vertically */        
+        display: flex;
         gap: 10px; /* Space between the input boxes */
         margin-bottom: 30px;
     }
@@ -110,16 +112,18 @@
 
     button {
         padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
+        background-color: white;
+        color: darkslategray;
+        border: 2px solid darkslategray;
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
+        font-weight: bold;
     }
 
     button:hover {
-        background-color: #0056b3;
+        background-color: darkslategray;
+        color: white;
     }
 }
 
@@ -129,28 +133,35 @@
 
 .solve-riddle-container 
 {
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 700px;
+    margin: 30px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  
     background-color: white;
     padding: 20px;
     text-align: center;
   
-    h2 {
+    h2
+    {   
         font-size: 24px;
+        font-weight: bold;
         margin-bottom: 20px;
+    }
+
+    .question
+    {
+        font-size: 20px;
+        font-weight: bold;
     }
 
     form-group {
         margin-bottom: 20px;
     }
 
-    label {
+    label
+    {
         display: block;
         margin-bottom: 5px;
         font-weight: bolder;
@@ -163,7 +174,8 @@
 
     .horizontal-letters {
         justify-content: center; /* Center the items horizontally */
-        align-items: center; /* Center the items vertically */        display: flex;
+        align-items: center; /* Center the items vertically */        
+        display: flex;
         gap: 10px; /* Space between the input boxes */
         margin-bottom: 30px;
     }
@@ -178,16 +190,18 @@
 
     button {
         padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
+        background-color: white;
+        color: darkslategray;
+        border: 2px solid darkslategray;
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
+        font-weight: bold;
     }
 
     button:hover {
-        background-color: #0056b3;
+        background-color: darkslategray;
+        color: white;
     }
 }
 
@@ -197,20 +211,28 @@
 
 .solve-wordle-container 
 {
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 700px;
+    margin: 30px auto;
     padding: 20px;
+    border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    
     background-color: white;
     padding: 20px;
     text-align: center;
   
-    h2 {
+  
+    h2
+    {   
         font-size: 24px;
+        font-weight: bold;
         margin-bottom: 20px;
+    }
+
+    .question
+    {
+        font-size: 20px;
+        font-weight: bold;
     }
 
     form-group {
@@ -223,6 +245,33 @@
         font-weight: bolder;
     }
 
+    #solution
+    {
+        font-size: 20px;
+    }
+
+    .letter-row
+    {
+        text-align: center;
+        width: 300px;
+        margin: 20px auto;
+        
+        .letter-box
+        {
+            border: 2px solid darkslategray;
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            text-transform: capitalize;
+            color: darkslategray;
+            float: left;
+
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+    }
+
     #description
     {
         width: 400px;
@@ -230,7 +279,8 @@
 
     .horizontal-letters {
         justify-content: center; /* Center the items horizontally */
-        align-items: center; /* Center the items vertically */        display: flex;
+        align-items: center; /* Center the items vertically */        
+        display: flex;
         gap: 10px; /* Space between the input boxes */
         margin-bottom: 30px;
     }
@@ -245,16 +295,18 @@
 
     button {
         padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
+        background-color: white;
+        color: darkslategray;
+        border: 2px solid darkslategray;
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
+        font-weight: bold;
     }
 
     button:hover {
-        background-color: #0056b3;
+        background-color: darkslategray;
+        color: white;
     }
 }
 

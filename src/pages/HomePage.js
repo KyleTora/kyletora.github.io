@@ -7,8 +7,8 @@ import '../styles/homepage.css';
 
 const HomePage = ({ user }) => {
   const [selectedPuzzles, setSelectedPuzzles] = useState(['riddles']);
-  const [selectedFilter, setSelectedFilter] = useState('Most likes');
-  const [selectedPageLength, setSelectedPageLength] = useState();
+  const [selectedFilter, setSelectedFilter] = useState('popular');
+  const [selectedPageLength, setSelectedPageLength] = useState(10);
 
   const handlePuzzleSelect = (selectedPuzzles) => {
     setSelectedPuzzles(selectedPuzzles);
@@ -25,19 +25,14 @@ const HomePage = ({ user }) => {
   return (
     <div className="homepage">
       <div className="container row mx-auto">
-        <div className="col-3">
+        <div className="col-md-3 col-12">
           <Sidebar 
             onPuzzleSelect={handlePuzzleSelect} 
             onFilterSelect={handleFilterSelect} 
             onPageLengthSelect={handlePageLengthSelect} 
           />
         </div>
-        <div className="col-7">
-          {user && user.providerData[0]?.displayName ? (
-            <>
-              <h4 className='heading'>Welcome back, {user.providerData[0].displayName}!</h4>
-            </>
-          ) : null}
+        <div className="col-md-8 col-12">
           <Content user={user}
             selectedPuzzles={selectedPuzzles} 
             selectedFilter={selectedFilter} 

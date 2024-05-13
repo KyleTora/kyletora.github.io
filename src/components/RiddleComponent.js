@@ -80,10 +80,10 @@ const RiddleComponent = ({user}) => {
     <div className="solve-riddle-container">
       <h2>Solve the Riddle</h2>
       {error && <p className="error">{error}</p>}
-      <p>{question}</p>
+      <p className='question'>{question}</p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="solution">Solution: {riddle.length} letters</label>
+          <label htmlFor="solution">Solution is {riddle.length} letters long</label>
           <input
             type="text"
             id="solution"

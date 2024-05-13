@@ -108,7 +108,7 @@ const CreatePuzzlePage = ({ user }) => {
         ) : (
         <form onSubmit={handleWordleSubmit}>
           <div className="form-group">
-              <label htmlFor="description">Wordle:</label>
+              <label htmlFor="description">Enter something that helps solve your wordle. This could be a hint, category or a description</label>
               <textarea
                 id="description"
                 value={description}
