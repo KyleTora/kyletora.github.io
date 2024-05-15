@@ -25,14 +25,14 @@ const HomePage = ({ user }) => {
   return (
     <div className="homepage">
       <div className="container row mx-auto">
-        <div className="col-md-3 col-12">
+        <div className="col-md-5 col-lg-3 col-12">
           <Sidebar 
             onPuzzleSelect={handlePuzzleSelect} 
             onFilterSelect={handleFilterSelect} 
             onPageLengthSelect={handlePageLengthSelect} 
           />
         </div>
-        <div className="col-md-8 col-12">
+        <div className="col-md-7 col-lg-9 col-12">
           <Content user={user}
             selectedPuzzles={selectedPuzzles} 
             selectedFilter={selectedFilter} 

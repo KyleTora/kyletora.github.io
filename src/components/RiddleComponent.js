@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, getDoc, arrayRemove, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import '../styles/puzzles.css';
@@ -38,7 +38,6 @@ const RiddleComponent = ({user}) => {
     e.preventDefault();
 
     if (solution.toUpperCase() === riddle.toUpperCase()) {
-      setIsSolved(true);
       setError(null);
       handleRiddleComplete();
 
@@ -49,18 +48,38 @@ const RiddleComponent = ({user}) => {
 
   const handleRiddleComplete = async () => {
     try {
-      const userDocRef = doc(db, 'users', userID);
-      
-      await updateDoc(userDocRef, {
-        completedRiddles: arrayUnion(id) 
-      });
-      
-      console.log('Riddle completed successfully');
+        const userDocRef = doc(db, 'users', userID);
+        
+        // Check if the user has already completed the puzzle
+        const userDoc = await getDoc(userDocRef);
+        const completedRiddles = userDoc.data().completedRiddles || [];
+        if (completedRiddles.includes(id)) {
+            setError('You have already solved this riddle.');
+            console.log('You have already solved this riddle.');
+            return;
+        }
+
+        // Update the solves count for the puzzle
+        const puzzleRef = doc(db, 'riddles', id); // Replace 'puzzles' with the actual collection name
+        const puzzleDoc = await getDoc(puzzleRef);
+        if (puzzleDoc.exists()) {
+            const currentSolves = puzzleDoc.data().solves || 0;
+            await updateDoc(puzzleRef, { solves: currentSolves + 1 });
+        }
+        
+        // Update the completed puzzles field in the user document
+        await updateDoc(userDocRef, {
+          completedRiddles: arrayUnion(id) 
+        });
+        
+        setIsSolved(true);
+        console.log('Riddle completed successfully');
     } catch (err) {
-      setError('Failed to update riddle. Please try again later.');
-      console.error('Error completing riddle:', err);
+        setError('Failed to update riddle. Please try again later.');
+        console.error('Error completing riddle:', err);
     }
-  };
+};
+  
 
   if (!riddle) {
     return <div>Loading...</div>;
@@ -79,7 +98,6 @@ const RiddleComponent = ({user}) => {
   return (
     <div className="solve-riddle-container">
       <h2>Solve the Riddle</h2>
-      {error && <p className="error">{error}</p>}
       <p className='question'>{question}</p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -90,10 +108,13 @@ const RiddleComponent = ({user}) => {
             value={solution}
             onChange={(e) => setSolution(e.target.value)}
             required
+            autoFocus 
+            autoComplete='off'
           />
         </div>
         <button type="submit">Check Solution</button>
       </form>
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };

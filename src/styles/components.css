@@ -61,10 +61,18 @@
   padding: 20px;
   margin-bottom: 30px;
 
-  .title {
-    font-size: 2rem;
-    margin-bottom: 20px;
+
+    
+    .title 
+    {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+      text-transform: capitalize;
+    
   }
+  
 
   .puzzle-container 
   {
@@ -153,6 +161,52 @@
       color: white;
       font-weight: bold;
     }
+
+    .share-button 
+    {
+      background-color: white;
+      color: darkslategray;
+      border: 2px solid darkslategray;
+      padding: 7px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 0;
+
+    }
+
+    .share-button:hover 
+    {
+      background-color: darkslategray;
+      border: 2px solid darkslategray;
+      color: white;
+      font-weight: bold;
+    }
+  }
+}
+
+.modal-body
+{
+  p
+  {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  button
+  {
+    background-color: white;
+    border: 2px solid darkslategray;
+    color: darkslategray;
+    font-weight: bold;
+  }
+
+  button:hover
+  {
+    background-color: darkslategray;
+    border: 2px solid darkslategray;
+    color: white;
+    font-weight: bold;
   }
 }
 
@@ -160,9 +214,9 @@
 
 /* #region Footer */
   .footer {
-    background-color: #333;
+    background-color: darkslategray;
     color: #fff;
-    padding: 10px;
+    padding: 30px;
   }
   
   /* #endregion */

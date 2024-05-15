@@ -19,7 +19,7 @@ const WordleComponent = ({user}) => {
   useEffect(() => {
     const fetchWordle = async () => {
       try {
-        const wordleDoc = await getDoc(doc(db, 'wordles', id));
+        const wordleDoc = await getDoc(doc(db, 'daily', id));
         if (wordleDoc.exists()) {
           setWordle(wordleDoc.data().solution);
           setQuestion(wordleDoc.data().description);
@@ -63,7 +63,6 @@ const WordleComponent = ({user}) => {
   };
 
 
-  
   const handleRiddleComplete = async () => {
     try {
         const userDocRef = doc(db, 'users', userID);
@@ -78,7 +77,7 @@ const WordleComponent = ({user}) => {
         }
 
         // Update the solves count for the puzzle
-        const puzzleRef = doc(db, 'wordles', id); // Replace 'puzzles' with the actual collection name
+        const puzzleRef = doc(db, 'daily', id); // Replace 'puzzles' with the actual collection name
         const puzzleDoc = await getDoc(puzzleRef);
         if (puzzleDoc.exists()) {
             const currentSolves = puzzleDoc.data().solves || 0;
@@ -89,14 +88,14 @@ const WordleComponent = ({user}) => {
         await updateDoc(userDocRef, {
             completedWordles: arrayUnion(id) 
         });
-        
+
         setIsSolved(true);
-        console.log('Wordle completed successfully');
+        console.log('Riddle completed successfully');
     } catch (err) {
-        setError('Failed to update wordle. Please try again later.');
-        console.error('Error completing wordle:', err);
+        setError('Failed to update riddle. Please try again later.');
+        console.error('Error completing riddle:', err);
     }
-  };
+};
   
   
   if (!wordle) {
@@ -114,11 +113,11 @@ const WordleComponent = ({user}) => {
 
   return (
     <div className="solve-wordle-container">
-      <h2>Solve the Wordle</h2>
-      <p className='question'>{question}</p>
+      <h2>Welcome To The Daily Wordle</h2>
+      <p className='subheading'>Come back every day and try to solve each one to keep your streak going!</p>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="solution">Length: {wordle.length} letters</label>
+            <label htmlFor="solution" className='question'>{question}</label>
             <input type="text" 
                   id="solution"
                   value={solution}

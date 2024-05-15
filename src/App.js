@@ -38,8 +38,8 @@ function App() {
           <Route path="/" element={<LandingPage user={user}/>} />
           <Route path="/explore" element={<HomePage user={user} />} />
           <Route path="/profile" element={<ProfilePage user={user} />} />
-          <Route path="/signin" element={user ? <Navigate to="/" /> : <SignInPage />} />
-          <Route path="/signup" element={user ? <Navigate to="/" /> : <SignUpPage />} />
+          <Route path="/signin" element={user ? <Navigate to="/explore" /> : <SignInPage />} />
+          <Route path="/signup" element={user ? <Navigate to="/explore" /> : <SignUpPage />} />
           <Route 
             path="/puzzleBuild" 
             element={user ? <CreatePuzzle user={user} /> : <Navigate to="/signin" />} 

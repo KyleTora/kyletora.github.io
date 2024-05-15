@@ -2,9 +2,11 @@
 
 .landing-page
 {
-    background: linear-gradient(340deg, rgba(47,79,79,1) 40%, rgba(255,255,255,1) 70%);
+    background-color: white;
+    background-image: linear-gradient(140deg, #fff 78.9%, #2f4f4f 79%);
+    
     color: white;
-    height:100vh;
+    height: 90vh;
     position: relative;
 
     .text-box

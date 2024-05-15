@@ -2,56 +2,73 @@ import React, { useState, useEffect } from 'react';
 import '../styles/components.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faPlayCircle, faShareAlt } from '@fortawesome/free-solid-svg-icons';
 import { collection, getDocs, updateDoc, doc, getDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase'; 
+import { Modal, Button } from 'react-bootstrap';
 
 const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) => {
   const navigate = useNavigate();
   const [puzzles, setPuzzles] = useState([]);
+  const [dailyPuzzle, setDailyPuzzle] = useState([]);
+  const [selectedPuzzle, setSelectedPuzzle] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   const userID = user?.uid || '';
 
+  const getDailyPuzzle = async () => {
+    try {
+      const dailyRef = collection(db, 'daily');
+      const querySnapshot = await getDocs(dailyRef);
+      if (!querySnapshot.empty) {
+        const dailyPuzzles = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        dailyPuzzles.sort((a, b) => b.date.toDate() - a.date.toDate());
+        setDailyPuzzle(dailyPuzzles[0]);
+      } else {
+        console.log('No daily puzzle found.');
+      }
+    } catch (error) {
+      console.error('Error fetching daily puzzle:', error);
+    }
+  };
+
+  const getFilteredPuzzles = async () => {
+    if (!selectedPuzzles || selectedPuzzles.length === 0) {
+      setPuzzles([]);
+      return;
+    }
+
+    const promises = selectedPuzzles.map(puzzleType => {
+      const puzzleRef = collection(db, puzzleType);
+      return getDocs(puzzleRef);
+    });
+
+    const results = await Promise.all(promises);
+    let fetchedPuzzles = results.flatMap(docList => docList.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+    switch (selectedFilter) {
+      case 'Most Liked':
+        fetchedPuzzles.sort((a, b) => b.likes - a.likes);
+        break;
+      case 'Most Solved':
+        fetchedPuzzles.sort((a, b) => b.solves - a.solves);
+        break;
+      case 'Latest':
+        fetchedPuzzles.sort((a, b) => new Date(b.date) - new Date(a.date));
+        break;
+      default:
+        break;
+    }
+
+    fetchedPuzzles = fetchedPuzzles.slice(0, selectedPageLength);
+
+    setPuzzles(fetchedPuzzles);
+  };
+
   useEffect(() => {
-    const getFilteredPuzzles = async () => {
-      if (!selectedPuzzles || selectedPuzzles.length === 0) {
-        setPuzzles([]);
-        return;
-      }
-
-      const promises = selectedPuzzles.map(puzzleType => {
-        const puzzleRef = collection(db, puzzleType);
-        return getDocs(puzzleRef);
-      });
-
-      const results = await Promise.all(promises);
-      let fetchedPuzzles = results.flatMap(docList => docList.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-
-      // Apply the selected filter
-      switch (selectedFilter) {
-        case 'popular':
-          fetchedPuzzles.sort((a, b) => b.likes - a.likes);
-          break;
-        case 'Most solved':
-          // Add your sorting logic for 'Most solved' here
-          break;
-        case 'Order by date':
-          fetchedPuzzles.sort((a, b) => new Date(b.date) - new Date(a.date));
-          break;
-        case 'Order by difficulty':
-          // Add your sorting logic for 'Order by difficulty' here
-          break;
-        default:
-          break;
-      }
-
-      // Limit the number of displayed puzzles
-      fetchedPuzzles = fetchedPuzzles.slice(0, selectedPageLength);
-
-      setPuzzles(fetchedPuzzles);
-    };
-
+    getDailyPuzzle();
     getFilteredPuzzles();
   }, [selectedPuzzles, selectedFilter, selectedPageLength]);
 
@@ -62,7 +79,13 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
         return;
       }
 
-      const puzzleRef = doc(db, `${puzzleType}` + 's', puzzleId);
+      var puzzleRef = doc(db, `${puzzleType}` + 's', puzzleId);
+
+      if(puzzleType == "daily")
+      {
+        puzzleRef = doc(db, `${puzzleType}`, puzzleId);
+      }
+
       const puzzleDoc = await getDoc(puzzleRef);
 
       if (puzzleDoc.exists()) {
@@ -88,7 +111,7 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
             likedRiddles: arrayUnion(puzzleId),
           });
         }
-        else
+        else if(puzzleType === "wordles")
         {
           await updateDoc(userDocRef, {
             likedWordles: arrayUnion(puzzleId),
@@ -109,33 +132,101 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
     navigate(`/puzzleSolve/${puzzle.puzzleType}/${puzzle.id}`);
   };
 
+
+  const handleShare = (puzzle) => {
+    setSelectedPuzzle(puzzle);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleShareOption = (option) => {
+    if (option === 'email') {
+      const puzzleId = selectedPuzzle?.id;
+      if (!puzzleId) {
+        console.error('No puzzle ID found');
+        return;
+      }
+      const puzzleURL = `https://kyletora.github.io/puzzleSolve/${selectedPuzzle?.puzzleType}/${puzzleId}`;
+      const subject = encodeURIComponent(`Check out this puzzle: ${selectedPuzzle?.description}`);
+      const body = encodeURIComponent(`I found this interesting puzzle on PuzzleHub. Check it out: <a href="${puzzleURL}">Puzzle</a>`);
+      window.location.href = `mailto:?subject=${subject}&body=${body}&content-type=text/html`;
+    } else {
+      console.log('Sharing via', option);
+    }
+    handleCloseModal();
+  };
+  
   return (
-    <div className='content'>
-      <h1 className="title">Puzzle Feed</h1>
-      {puzzles.map((puzzle) => (
-        <div key={puzzle.id} className="puzzle-container">
-          <a className='puzzle-type'>{puzzle.puzzleType}</a>          
+    <div className='content row'>
+      <div className='daily-wordle col-5 order-2'>
+        <h1 className="title">Daily Wordle</h1>
+         <div key={dailyPuzzle.id} className="puzzle-container">
+          <a className='puzzle-type'>{dailyPuzzle.puzzleType}</a>          
           <span className='puzzle-date'>
-            {new Date(puzzle.date).toLocaleDateString('en-US', {
+            {new Date(dailyPuzzle.date).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
             })}
           </span>
-          <h4 className="puzzle-description">{puzzle.description}</h4>
+          <h4 className="puzzle-description">{dailyPuzzle.description}</h4>
           <div className="puzzle-info">
-            <p className="puzzle-author">Posted by: {puzzle.author}</p>
+            <p className="puzzle-author">Todays solves: {dailyPuzzle.solves}</p>
           </div>
           <div className="puzzle-actions">
-            <button onClick={() => handleLike(puzzle.puzzleType, puzzle.id)} className="like-button">
-              <FontAwesomeIcon icon={faThumbsUp} /> {puzzle.likes}
+            <button onClick={() => handleLike(dailyPuzzle.puzzleType, dailyPuzzle.id)} className="like-button">
+              <FontAwesomeIcon icon={faThumbsUp} /> Like
             </button>
-            <button onClick={() => handleSolveClick(puzzle)} className="solve-button">
+            <button onClick={() => handleSolveClick(dailyPuzzle)} className="solve-button">
               <FontAwesomeIcon icon={faPlayCircle} /> Solve
             </button>
           </div>
         </div>
-      ))}
+      </div>
+      <div className='daily-wordle col-7'>
+        <h1 className="title">Feed</h1>
+        {puzzles.map((puzzle) => (
+          <div key={puzzle.id} className="puzzle-container">
+            <a className='puzzle-type'>{puzzle.puzzleType}</a>          
+            <span className='puzzle-date'>
+              {new Date(puzzle.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </span>
+            <h4 className="puzzle-description">{puzzle.description}</h4>
+            <div className="puzzle-info">
+              <p className="puzzle-author">Posted by: {puzzle.author}</p>
+            </div>
+            <div className="puzzle-actions">
+              <button onClick={() => handleLike(puzzle.puzzleType, puzzle.id)} className="like-button">
+                <FontAwesomeIcon icon={faThumbsUp} /> Like 
+              </button>
+              <button onClick={() => handleSolveClick(puzzle)} className="solve-button">
+                <FontAwesomeIcon icon={faPlayCircle} /> Solve
+              </button>
+              <button onClick={() => handleShare(puzzle)} className="share-button">
+                <FontAwesomeIcon icon={faShareAlt} /> Share
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Share Puzzle</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='test'>
+          <p>Would you like to share the puzzle: <strong>"{selectedPuzzle?.description}"</strong> with others?</p>
+          <Button onClick={() => handleShareOption('social-media')}>Share on Social Media</Button>
+          <Button onClick={() => handleShareOption('email')}>Share via Email</Button>
+          {/* Add more share options as needed */}
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

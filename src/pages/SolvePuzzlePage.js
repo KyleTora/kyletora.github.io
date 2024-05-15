@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Riddle from '../components/RiddleComponent';
 import Wordle from '../components/WordleComponent';
+import Daily from '../components/DailyWordleComponent';
 import { useParams } from 'react-router-dom';
 
 const PuzzleSolvePage = (user) => {
@@ -9,7 +10,7 @@ const PuzzleSolvePage = (user) => {
 
   return (
     <div>
-      {type === 'wordle' ? <Wordle user={user} /> : <Riddle user={user}/>}
+      {type === 'riddle' ? <Riddle user={user} /> : type === 'wordle' ? <Wordle user={user} /> : <Daily user={user} />} 
     </div>
   );
 };
