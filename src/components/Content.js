@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/components.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faPlayCircle, faShareAlt } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faPlayCircle, faShareAlt, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { collection, getDocs, updateDoc, doc, getDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,9 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
   const [dailyPuzzle, setDailyPuzzle] = useState([]);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [categoryPuzzles, setCategoryPuzzles] = useState(["View all", "wordles", "riddles", "popular", "newest"]);
+  const [showCategories, setShowCategories] = useState(true); // New state variable
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const userID = user?.uid || '';
 
@@ -34,11 +37,46 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
     }
   };
 
+  const getCategories = async () => {
+    const category = ["wordles", "riddles"];
+
+    const promises = category.map(puzzleType => {
+      const puzzleRef = collection(db, puzzleType);
+      return getDocs(puzzleRef);
+    });
+    
+    const results = await Promise.all(promises);
+    let fetchedPuzzles = results.flatMap(docList => docList.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    
+    let all = { title: "All Puzzles", puzzles: fetchedPuzzles };
+    let mostLiked = { title: "Popular", puzzles: fetchedPuzzles.sort((a, b) => b.likes - a.likes) };
+    let mostSolved = { title: "Easiest", puzzles: fetchedPuzzles.sort((a, b) => b.solves - a.solves) };
+    let leastSolved = { title: "Hardest", puzzles: fetchedPuzzles.sort((a, b) => a.solves - b.solves) };
+    let newest = { title: "Newest", puzzles: fetchedPuzzles.sort((a, b) => new Date(b.date) - new Date(a.date)) };
+    let riddles = { title: "Riddles", puzzles: fetchedPuzzles.filter(a => a.puzzleType === "riddle") };
+    let wordles = { title: "Wordles", puzzles: fetchedPuzzles.filter(a => a.puzzleType === "wordle") };
+  
+    setCategoryPuzzles({
+      all,
+      wordles,
+      riddles,
+      mostLiked,
+      leastSolved,
+      mostSolved,
+      newest
+    });
+    
+    console.log(categoryPuzzles);
+
+  };
+
   const getFilteredPuzzles = async () => {
     if (!selectedPuzzles || selectedPuzzles.length === 0) {
       setPuzzles([]);
       return;
     }
+
+    selectedPuzzles = ["riddles", "wordles"];
 
     const promises = selectedPuzzles.map(puzzleType => {
       const puzzleRef = collection(db, puzzleType);
@@ -48,19 +86,9 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
     const results = await Promise.all(promises);
     let fetchedPuzzles = results.flatMap(docList => docList.docs.map(doc => ({ id: doc.id, ...doc.data() })));
 
-    switch (selectedFilter) {
-      case 'Most Liked':
-        fetchedPuzzles.sort((a, b) => b.likes - a.likes);
-        break;
-      case 'Most Solved':
-        fetchedPuzzles.sort((a, b) => b.solves - a.solves);
-        break;
-      case 'Latest':
-        fetchedPuzzles.sort((a, b) => new Date(b.date) - new Date(a.date));
-        break;
-      default:
-        break;
-    }
+
+    fetchedPuzzles.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
 
     fetchedPuzzles = fetchedPuzzles.slice(0, selectedPageLength);
 
@@ -70,7 +98,19 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
   useEffect(() => {
     getDailyPuzzle();
     getFilteredPuzzles();
+    getCategories();
   }, [selectedPuzzles, selectedFilter, selectedPageLength]);
+
+  const handleCategoryClick = (category) => {
+    setPuzzles(category.puzzles); // Set puzzles when category is clicked
+    setShowCategories(false); // Hide categories when category is clicked
+    setSelectedCategory(category.title);
+  };
+
+  const handleBackButtonClick = () => {
+    setShowCategories(true); // Show categories again
+    setSelectedCategory(""); // Clear selected category
+  };
 
   const handleLike = async (puzzleType, puzzleId) => {
     try {
@@ -161,7 +201,69 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
   
   return (
     <div className='content row'>
-      <div className='daily-wordle col-5 order-2'>
+      <div className='category col-8'>
+        {showCategories ? (
+          <>
+            <h1 className='title'>Categories</h1>
+            <div className='blocks row'>
+              {Object.entries(categoryPuzzles).map(([key, { title, puzzles }], index) => (
+                <div key={index} className='col-4'>
+                  <div className='block card' onClick={() => handleCategoryClick({ title, puzzles })}>
+                  </div>
+                  <div className='category-title'>
+                    {title}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+        <div>
+          {puzzles.length > 0 && (
+            <>
+            <div className="selected-category">
+              <button onClick={handleBackButtonClick} className="btn btn-secondary back-button">
+                <FontAwesomeIcon icon={faArrowLeft} /> Back to Categories
+              </button>
+              <h1 className='title'>{selectedCategory}</h1>
+              <div className="puzzles">
+                {puzzles.map((puzzle) => (
+                <div key={puzzle.id} className="puzzle-container">
+                <a className='puzzle-type'>{puzzle.puzzleType}</a>          
+                <span className='puzzle-date'>
+                  {new Date(puzzle.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </span>
+                <h4 className="puzzle-description">{puzzle.description}</h4>
+                <div className="puzzle-info">
+                  <p className="puzzle-author">Posted by: {puzzle.author}</p>
+                </div>
+                <div className="puzzle-actions">
+                  <button onClick={() => handleLike(puzzle.puzzleType, puzzle.id)} className="like-button">
+                    <FontAwesomeIcon icon={faThumbsUp} /> Like 
+                  </button>
+                  <button onClick={() => handleSolveClick(puzzle)} className="solve-button">
+                    <FontAwesomeIcon icon={faPlayCircle} /> Solve
+                  </button>
+                  <button onClick={() => handleShare(puzzle)} className="share-button">
+                    <FontAwesomeIcon icon={faShareAlt} /> Share
+                  </button>
+                </div>
+              </div>
+            ))}
+              </div>
+            </div>
+            </>
+          )}
+        </div>
+        
+        )}
+      </div>
+
+      <div className='daily-wordle col-4 order-2'>
         <h1 className="title">Daily Wordle</h1>
          <div key={dailyPuzzle.id} className="puzzle-container">
           <a className='puzzle-type'>{dailyPuzzle.puzzleType}</a>          
@@ -185,9 +287,7 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
             </button>
           </div>
         </div>
-      </div>
-      <div className='daily-wordle col-7'>
-        <h1 className="title">Feed</h1>
+        {/* <h1 className="title">All Puzzles</h1>
         {puzzles.map((puzzle) => (
           <div key={puzzle.id} className="puzzle-container">
             <a className='puzzle-type'>{puzzle.puzzleType}</a>          
@@ -214,7 +314,7 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
               </button>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
