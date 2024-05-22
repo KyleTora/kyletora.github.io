@@ -48,14 +48,24 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
     const results = await Promise.all(promises);
     let fetchedPuzzles = results.flatMap(docList => docList.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     
-    let all = { title: "All Puzzles", puzzles: fetchedPuzzles };
-    let mostLiked = { title: "Popular", puzzles: fetchedPuzzles.sort((a, b) => b.likes - a.likes) };
-    let mostSolved = { title: "Easiest", puzzles: fetchedPuzzles.sort((a, b) => b.solves - a.solves) };
-    let leastSolved = { title: "Hardest", puzzles: fetchedPuzzles.sort((a, b) => a.solves - b.solves) };
-    let newest = { title: "Newest", puzzles: fetchedPuzzles.sort((a, b) => new Date(b.date) - new Date(a.date)) };
+    let all = { title: "All Puzzles", puzzles: [...fetchedPuzzles] };
+    let mostLiked = { title: "Popular", puzzles: [...fetchedPuzzles].sort((a, b) => b.likes - a.likes) };
+    let mostSolved = {
+      title: "Easiest",
+      puzzles: [...fetchedPuzzles]
+        .filter(puzzle => puzzle.solves >= 5)
+        .sort((a, b) => b.solves - a.solves)
+    };    
+    let leastSolved = {
+      title: "Hardest",
+      puzzles: [...fetchedPuzzles]
+        .filter(puzzle => puzzle.solves >= 1)
+        .sort((a, b) => a.solves - b.solves)
+    };    
+    let newest = { title: "Newest", puzzles: [...fetchedPuzzles].sort((a, b) => new Date(b.date) - new Date(a.date)) };
     let riddles = { title: "Riddles", puzzles: fetchedPuzzles.filter(a => a.puzzleType === "riddle") };
     let wordles = { title: "Wordles", puzzles: fetchedPuzzles.filter(a => a.puzzleType === "wordle") };
-  
+    
     setCategoryPuzzles({
       all,
       wordles,
@@ -201,14 +211,14 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
   
   return (
     <div className='content row'>
-      <div className='category col-8'>
+      <div className='category col-lg-8 col-12 order-2'>
         {showCategories ? (
           <>
             <h1 className='title'>Categories</h1>
             <div className='blocks row'>
               {Object.entries(categoryPuzzles).map(([key, { title, puzzles }], index) => (
-                <div key={index} className='col-4'>
-                  <div className='block card' onClick={() => handleCategoryClick({ title, puzzles })}>
+                <div key={index} className='col-md-4 col-6 hover'>
+                  <div className='block card' id={key} onClick={() => handleCategoryClick({ title, puzzles })}>
                   </div>
                   <div className='category-title'>
                     {title}
@@ -243,10 +253,10 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
                 </div>
                 <div className="puzzle-actions">
                   <button onClick={() => handleLike(puzzle.puzzleType, puzzle.id)} className="like-button">
-                    <FontAwesomeIcon icon={faThumbsUp} /> Like 
+                    <FontAwesomeIcon icon={faThumbsUp} /> Like {puzzle.likes}
                   </button>
                   <button onClick={() => handleSolveClick(puzzle)} className="solve-button">
-                    <FontAwesomeIcon icon={faPlayCircle} /> Solve
+                    <FontAwesomeIcon icon={faPlayCircle} /> Solve {puzzle.solves}
                   </button>
                   <button onClick={() => handleShare(puzzle)} className="share-button">
                     <FontAwesomeIcon icon={faShareAlt} /> Share
@@ -263,7 +273,7 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
         )}
       </div>
 
-      <div className='daily-wordle col-4 order-2'>
+      <div className='daily-wordle col-lg-4 col-12 order-1 order-md-2'>
         <h1 className="title">Daily Wordle</h1>
          <div key={dailyPuzzle.id} className="puzzle-container">
           <a className='puzzle-type'>{dailyPuzzle.puzzleType}</a>          
@@ -287,6 +297,13 @@ const Content = ({ user, selectedPuzzles, selectedFilter, selectedPageLength }) 
             </button>
           </div>
         </div>
+            
+        <h1 className="title">Updates</h1>
+         <div className="puzzle-container">
+          <a className='puzzle-type'>Puzzle Page Updates</a>          
+          <h5 className="puzzle-description">The latest wordle has been relased under "Daily Wordles". Go check it out!</h5>
+        </div>
+
         {/* <h1 className="title">All Puzzles</h1>
         {puzzles.map((puzzle) => (
           <div key={puzzle.id} className="puzzle-container">

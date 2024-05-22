@@ -92,6 +92,7 @@ const CreatePuzzlePage = ({ user }) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
+              maxLength={300}
               ></textarea>
           </div>
           <div className="form-group">
@@ -101,6 +102,7 @@ const CreatePuzzlePage = ({ user }) => {
               value={riddle}
               onChange={(e) => setRiddle(e.target.value)}
               required
+              maxLength={30}
               ></textarea>
           </div>
           <button type="submit">Create Riddle</button>
@@ -114,6 +116,7 @@ const CreatePuzzlePage = ({ user }) => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
+                maxLength={300}
               ></textarea>
           </div>
           <div className="form-group">
@@ -123,6 +126,8 @@ const CreatePuzzlePage = ({ user }) => {
                 value={wordle}
                 onChange={(e) => setWordle(e.target.value)}
                 required
+                minLength={5}
+                maxLength={5}
               ></textarea>
           </div>
           <button type="submit">Create Wordle</button>

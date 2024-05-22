@@ -1,128 +1,47 @@
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 50px;
+}
 
+.profile-sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-.profile-container
-{
-    .profile-sidebar
-    {
+.profile-picture img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
 
-    }
+.profile-details {
+    margin-bottom: 20px;
+}
 
+.profile-details strong {
+    display: block;
+    margin-bottom: 5px;
+}
 
-    .profile-feed
-    {
-        h2
-        {
-            cursor: pointer;
-            margin-bottom: 10px;
-            color: black;
-            background-color: white;
-            padding: 10px;
-            transition: color 0.3s;
-            border-radius: 5px;
-            border: 2px solid black;
+.profile-feed {
+    flex: 1;
+}
 
-        }
+.bio {
+    margin-bottom: 20px;
+}
 
-        .profile-header 
-        {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-          
-            button
-            {
-                background-color: white;
-                border: 2px solid darkslategray;
-                color: darkslategray;
-            }
-    
-            .selected 
-            {
-                background-color: darkslategray;
-                border: 2px solid darkslategray;
-                color: #fff;
-                border-radius: 5px;
-            }
-        }
+.medals img {
+    width: 30px;
+    margin-right: 10px;
+}
 
-
-        .puzzle-container
-        {
-            border: 2px solid black;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-            transition: background-color 0.3s;
-
-            .puzzle-type
-            {
-                text-decoration: none;
-                text-transform: uppercase;
-                color: slategray;
-                font-weight: bold;
-            }
-
-            .puzzle-description 
-            {
-                font-size: 24px;
-                margin-bottom: 10px;
-            }
-
-            .puzzle-info 
-            {
-                text-transform: capitalize;
-            }
-
-            .puzzle-author, .puzzle-likes 
-            {
-                font-size: 0.9rem;
-            }
-
-            .puzzle-actions 
-            {
-                gap: 10px;
-            }
-
-            .like-button 
-            {
-                background-color: #2f7500;
-                color: #fff;
-                border: 2px solid #2f7500;
-                padding: 7px 10px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-weight: bold;
-                margin-left: 0;
-
-            }
-
-            .like-button:hover 
-            {
-                background-color: white;
-                border: 2px solid #2f7500;
-                color: #2f7500;
-                font-weight: bold;
-            }
-
-            .solve-button 
-            {
-                background-color: darkslategray;
-                color: #fff;
-                border: 2px solid darkslategray;
-                padding: 7px 10px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-weight: bold;
-                margin-left: 5px;
-            }
-
-            .solve-button:hover 
-            {
-                background-color: white;
-                border: 2px solid darkslategray;
-                color: darkslategray;
-                font-weight: bold;
-            }
-        }
-    }
+.streak {
+    font-weight: bold;
 }
