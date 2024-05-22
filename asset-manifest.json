@@ -1,13 +1,20 @@
 {
   "files": {
-    "main.css": "/static/css/main.f6224498.css",
-    "main.js": "/static/js/main.06fd30a8.js",
+    "main.css": "/static/css/main.31d3af04.css",
+    "main.js": "/static/js/main.05ba0a17.js",
+    "static/media/wordle.jpg": "/static/media/wordle.21c0af7cf0db18fa02e8.jpg",
+    "static/media/all.jpg": "/static/media/all.db6b38141061ad3f1506.jpg",
+    "static/media/easy.jpeg": "/static/media/easy.03a56888e31eabb1d396.jpeg",
+    "static/media/riddle.jpg": "/static/media/riddle.cc83195da35b8cb63e7a.jpg",
+    "static/media/hard.jpeg": "/static/media/hard.0061d688a8ce754ed822.jpeg",
+    "static/media/popular.jpeg": "/static/media/popular.4cbc1859565f4eab3e3a.jpeg",
+    "static/media/new.jpeg": "/static/media/new.42374412ed1baade7561.jpeg",
     "index.html": "/index.html",
-    "main.f6224498.css.map": "/static/css/main.f6224498.css.map",
-    "main.06fd30a8.js.map": "/static/js/main.06fd30a8.js.map"
+    "main.31d3af04.css.map": "/static/css/main.31d3af04.css.map",
+    "main.05ba0a17.js.map": "/static/js/main.05ba0a17.js.map"
   },
   "entrypoints": [
-    "static/css/main.f6224498.css",
-    "static/js/main.06fd30a8.js"
+    "static/css/main.31d3af04.css",
+    "static/js/main.05ba0a17.js"
   ]
 }
